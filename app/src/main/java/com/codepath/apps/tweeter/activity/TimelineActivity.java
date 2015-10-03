@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TimelineActivity extends AppCompatActivity {
 
@@ -34,6 +36,8 @@ public class TimelineActivity extends AppCompatActivity {
     private ListView lvTweets;
     private static final int REQUEST_CODE_TIMELINE = 1;
     private static final int TWITTER_FETCH_COUNT = 25;
+    private SwipeRefreshLayout scTweets;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +52,35 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
                 Tweet lastTweet = tweets.get(tweets.size() - 1);
-                populateTimeline(1L, lastTweet.uid - 1, TWITTER_FETCH_COUNT);
+                // since we'll be fetching old tweets, append to the end of list
+                populateTimeline(1L, lastTweet.uid - 1, TWITTER_FETCH_COUNT, false);
                 return false;
             }
         });
+
+        scTweets = (SwipeRefreshLayout) findViewById(R.id.scTweets);
+        // Configure the refreshing colors
+        scTweets.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        scTweets.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Tweet firstTweet = tweets.get(0);
+                // since we'll be fetching new tweets, append to the front of list
+                populateTimeline(firstTweet.uid, null, TWITTER_FETCH_COUNT, true);
+                scTweets.setRefreshing(false);
+            }
+        });
+
         client = TweeterApp.getRestClient();
-        populateTimeline(1L, null, TWITTER_FETCH_COUNT);
+        populateTimeline(1L, null, TWITTER_FETCH_COUNT, false);
     }
 
-    private void populateTimeline(Long sinceId, Long maxId, int count) {
+    private void populateTimeline(
+            Long sinceId, Long maxId, int count, final boolean appendToFront) {
 
         if(!isNetworkAvailable()) {
             Toast.makeText(getApplicationContext(),
@@ -67,7 +91,15 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 Log.d(getClass().toString(), json.toString());
-                aTweets.addAll(Tweet.fromJSONArray(json));
+                if(appendToFront) {
+                    List<Tweet> newTweets = Tweet.fromJSONArray(json);
+                    for (int i = 0; i < newTweets.size(); i++) {
+                        aTweets.insert(newTweets.get(i), i);
+                    }
+
+                } else {
+                    aTweets.addAll(Tweet.fromJSONArray(json));
+                }
             }
 
             @Override
