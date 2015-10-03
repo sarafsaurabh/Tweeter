@@ -1,9 +1,15 @@
 package com.codepath.apps.tweeter.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +38,8 @@ public class TweetActivity extends AppCompatActivity {
     private EditText etTweet;
     private TwitterClient client;
     private User user;
+    private MenuItem miCharCount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +89,28 @@ public class TweetActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_tweet, menu);
+
+        miCharCount = menu.findItem(R.id.miCharCount);
+        miCharCount.setEnabled(false);
+
+        etTweet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int tweetLength = etTweet.getText().length();
+                miCharCount.setTitle(String.valueOf(140 - tweetLength));
+                if (tweetLength > 140) {
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         return true;
     }
 
@@ -110,6 +140,22 @@ public class TweetActivity extends AppCompatActivity {
     }
 
     public void onTweet(MenuItem item) {
+
+        if(TextUtils.isEmpty(etTweet.getText().toString())) {
+            Toast.makeText(getApplicationContext(),
+                    "Please enter a tweet", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(etTweet.getText().length() > 140) {
+            Toast.makeText(getApplicationContext(),
+                    "Please enter a valid tweet", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!isNetworkAvailable()) {
+            Toast.makeText(getApplicationContext(),
+                    "No internet connection available", Toast.LENGTH_SHORT).show();
+            finish();
+        }
         client.postTweet(new JsonHttpResponseHandler() {
 
             @Override
@@ -152,5 +198,12 @@ public class TweetActivity extends AppCompatActivity {
         tweet.createdAt = "Sat Oct 03 07:06:37 +0000 2015";
 
         return tweet;
+    }
+
+    private Boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }

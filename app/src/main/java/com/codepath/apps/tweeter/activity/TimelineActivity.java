@@ -1,7 +1,10 @@
 package com.codepath.apps.tweeter.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -30,7 +33,7 @@ public class TimelineActivity extends AppCompatActivity {
     private TweetsArrayAdapter aTweets;
     private ListView lvTweets;
     private static final int REQUEST_CODE_TIMELINE = 1;
-    private static final int TWITTER_FETCH_COUNT = 10;
+    private static final int TWITTER_FETCH_COUNT = 25;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,11 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     private void populateTimeline(Long sinceId, Long maxId, int count) {
+
+        if(!isNetworkAvailable()) {
+            Toast.makeText(getApplicationContext(),
+                    "No internet connection available", Toast.LENGTH_SHORT).show();
+        }
         client.getHomeTimeLine(new JsonHttpResponseHandler() {
 
             @Override
@@ -113,5 +121,12 @@ public class TimelineActivity extends AppCompatActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private Boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }

@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.codepath.apps.tweeter.activity.TweetActivity">
     <item
+        android:id="@+id/miCharCount"
+        app:showAsAction="always"
+        android:actionViewClass="android.widget.TextView"
+        android:maxLength="140"
+        android:title="140" >
+    </item>
+    <item
         android:id="@+id/miTweet"
         app:showAsAction="always"
         android:title="@string/tweet">

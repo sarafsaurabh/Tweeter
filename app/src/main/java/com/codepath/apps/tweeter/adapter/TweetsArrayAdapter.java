@@ -64,18 +64,19 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
         // 37 minutes ago => ["37", "minutes", "ago"]
         try {
-            Log.d("date: ", DateUtils.getRelativeTimeSpanString(
-                    getTwitterDate(tweet.createdAt).getTime(),
-                    System.currentTimeMillis(),
-                    DateUtils.SECOND_IN_MILLIS).toString());
 
-//            String[] createdTimeSplit =
-//                    DateUtils.getRelativeTimeSpanString(
-//                            getTwitterDate(tweet.createdAt).getTime(),
-//                            System.currentTimeMillis(),
-//                            DateUtils.SECOND_IN_MILLIS).toString().split(" ");
-//
-//            viewHolder.tvCreatedTime.setText(createdTimeSplit[0] + createdTimeSplit[1].charAt(0));
+            String[] createdTimeSplit =
+                    DateUtils.getRelativeTimeSpanString(
+                            getTwitterDate(tweet.createdAt).getTime(),
+                            System.currentTimeMillis(),
+                            DateUtils.SECOND_IN_MILLIS).toString().split(" ");
+
+            if(createdTimeSplit.length > 1) {
+                viewHolder.tvCreatedTime.setText(
+                        createdTimeSplit[0] + createdTimeSplit[1].charAt(0));
+            } else {
+                viewHolder.tvCreatedTime.setText(createdTimeSplit[0]);
+            }
         } catch (ParseException e) {
             Log.d(getClass().toString(), e.getMessage());
         }
