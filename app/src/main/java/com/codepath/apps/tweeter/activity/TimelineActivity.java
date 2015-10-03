@@ -14,6 +14,7 @@ import com.codepath.apps.tweeter.R;
 import com.codepath.apps.tweeter.TweeterApp;
 import com.codepath.apps.tweeter.adapter.TweetsArrayAdapter;
 import com.codepath.apps.tweeter.models.Tweet;
+import com.codepath.apps.tweeter.util.EndlessScrollListener;
 import com.codepath.apps.tweeter.util.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -29,6 +30,7 @@ public class TimelineActivity extends AppCompatActivity {
     private TweetsArrayAdapter aTweets;
     private ListView lvTweets;
     private static final int REQUEST_CODE_TIMELINE = 1;
+    private static final int TWITTER_FETCH_COUNT = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +41,19 @@ public class TimelineActivity extends AppCompatActivity {
         lvTweets = (ListView) findViewById(R.id.lvTweets);
         aTweets = new TweetsArrayAdapter(this, tweets);
         lvTweets.setAdapter(aTweets);
+        lvTweets.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                Tweet lastTweet = tweets.get(tweets.size() - 1);
+                populateTimeline(1L, lastTweet.uid - 1, TWITTER_FETCH_COUNT);
+                return false;
+            }
+        });
         client = TweeterApp.getRestClient();
-        populateTimeline();
+        populateTimeline(1L, null, TWITTER_FETCH_COUNT);
     }
 
-    private void populateTimeline() {
+    private void populateTimeline(Long sinceId, Long maxId, int count) {
         client.getHomeTimeLine(new JsonHttpResponseHandler() {
 
             @Override
@@ -59,7 +69,7 @@ public class TimelineActivity extends AppCompatActivity {
                         "Not able to load timeline", Toast.LENGTH_SHORT).show();
                 Log.e(getClass().toString(), errorResponse.toString());
             }
-        });
+        }, sinceId, maxId, count);
     }
 
     @Override
@@ -97,9 +107,8 @@ public class TimelineActivity extends AppCompatActivity {
 
         if(requestCode == REQUEST_CODE_TIMELINE) {
             if(resultCode == RESULT_OK) {
-                Tweet tweet = (Tweet) data.getParcelableExtra("tweet");
-                aTweets.add(tweet);
-                aTweets.notifyDataSetChanged();
+                Tweet tweet = data.getParcelableExtra("tweet");
+                aTweets.insert(tweet, 0);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
