@@ -7,10 +7,10 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="50dp"
-        android:minWidth="50dp"
-        android:maxHeight="50dp"
-        android:minHeight="50dp"
+        android:maxWidth="48dp"
+        android:minWidth="48dp"
+        android:maxHeight="48dp"
+        android:minHeight="48dp"
         android:layout_marginTop="5dp"
         android:id="@+id/ivProfile" />
 
@@ -48,6 +48,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvUsername"
+            android:autoLink="all"
+            android:linksClickable="true"
             android:id="@+id/tvTweet" />
 
     </RelativeLayout>

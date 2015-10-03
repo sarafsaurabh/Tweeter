@@ -1,5 +1,6 @@
 package com.codepath.apps.tweeter.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.codepath.apps.tweeter.R;
 import com.codepath.apps.tweeter.TweeterApp;
@@ -26,12 +28,13 @@ public class TimelineActivity extends AppCompatActivity {
     private ArrayList<Tweet> tweets = new ArrayList<>();
     private TweetsArrayAdapter aTweets;
     private ListView lvTweets;
+    private static final int REQUEST_CODE_TIMELINE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF4A9CED));
+        setActionBar();
 
         lvTweets = (ListView) findViewById(R.id.lvTweets);
         aTweets = new TweetsArrayAdapter(this, tweets);
@@ -52,7 +55,9 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers,
                                   Throwable throwable, JSONArray errorResponse) {
-                Log.d(getClass().toString(), errorResponse.toString());
+                Toast.makeText(getApplicationContext(),
+                        "Not able to load timeline", Toast.LENGTH_SHORT).show();
+                Log.e(getClass().toString(), errorResponse.toString());
             }
         });
     }
@@ -69,13 +74,35 @@ public class TimelineActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setActionBar() {
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF4A9CED));
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_twitter);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setElevation(0);
+    }
+
+    public void onComposeAction(MenuItem item) {
+        Intent i = new Intent(this, TweetActivity.class);
+        startActivityForResult(i, REQUEST_CODE_TIMELINE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(requestCode == REQUEST_CODE_TIMELINE) {
+            if(resultCode == RESULT_OK) {
+                Tweet tweet = (Tweet) data.getParcelableExtra("tweet");
+                aTweets.add(tweet);
+                aTweets.notifyDataSetChanged();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

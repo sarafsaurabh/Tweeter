@@ -16,7 +16,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF4A9CED));
+		setActionBar();
 	}
 
 
@@ -48,5 +48,14 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	public void loginToRest(View view) {
 		getClient().connect();
 	}
+
+	private void setActionBar() {
+		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF4A9CED));
+		getSupportActionBar().setDisplayShowHomeEnabled(true);
+		getSupportActionBar().setLogo(R.drawable.ic_twitter);
+		getSupportActionBar().setDisplayUseLogoEnabled(true);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setElevation(0);
+    }
 
 }

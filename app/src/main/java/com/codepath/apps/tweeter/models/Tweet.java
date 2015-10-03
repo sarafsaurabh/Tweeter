@@ -1,5 +1,7 @@
 package com.codepath.apps.tweeter.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -8,7 +10,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Tweet {
+public class Tweet implements Parcelable {
 
     public String body;
     public long uid;
@@ -43,4 +45,37 @@ public class Tweet {
         }
         return tweets;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.body);
+        dest.writeLong(this.uid);
+        dest.writeString(this.createdAt);
+        dest.writeParcelable(this.user, 0);
+    }
+
+    public Tweet() {
+    }
+
+    protected Tweet(Parcel in) {
+        this.body = in.readString();
+        this.uid = in.readLong();
+        this.createdAt = in.readString();
+        this.user = in.readParcelable(User.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Tweet> CREATOR = new Parcelable.Creator<Tweet>() {
+        public Tweet createFromParcel(Parcel source) {
+            return new Tweet(source);
+        }
+
+        public Tweet[] newArray(int size) {
+            return new Tweet[size];
+        }
+    };
 }
