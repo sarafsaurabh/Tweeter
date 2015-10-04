@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:padding="25px"
+    android:descendantFocusability="blocksDescendants"
     android:layout_height="match_parent">
 
     <ImageView
@@ -11,6 +12,7 @@
         android:minWidth="48dp"
         android:maxHeight="48dp"
         android:minHeight="48dp"
+        android:focusable="false"
         android:layout_marginTop="5dp"
         android:id="@+id/ivProfile" />
 
@@ -20,12 +22,14 @@
         android:layout_toRightOf="@id/ivProfile"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
+        android:focusable="false"
         android:layout_toEndOf="@id/ivProfile">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
+            android:focusable="false"
             android:id="@+id/tvUsername" />
 
         <TextView
@@ -35,6 +39,7 @@
             android:layout_marginStart="5dp"
             android:layout_toRightOf="@id/tvUsername"
             android:layout_toEndOf="@id/tvUsername"
+            android:focusable="false"
             android:id="@+id/tvScreenName" />
 
         <TextView
@@ -42,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:focusable="false"
             android:id="@+id/tvCreatedTime" />
 
         <TextView
@@ -49,6 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvUsername"
             android:autoLink="all"
+            android:focusable="false"
             android:linksClickable="true"
             android:id="@+id/tvTweet" />
 

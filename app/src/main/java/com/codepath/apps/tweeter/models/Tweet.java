@@ -16,6 +16,7 @@ public class Tweet implements Parcelable {
     public long uid;
     public String createdAt;
     public User user;
+    public ArrayList<Media> medias;
 
     public static Tweet fromJSON(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
@@ -24,6 +25,13 @@ public class Tweet implements Parcelable {
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+        JSONObject entities = jsonObject.optJSONObject("entities");
+        if(entities != null) {
+            JSONArray medias = entities.optJSONArray("media");
+            if (medias != null) {
+                tweet.medias = Media.fromJSONArray(medias);
+            }
+        }
 
         return tweet;
     }
@@ -46,6 +54,9 @@ public class Tweet implements Parcelable {
         return tweets;
     }
 
+    public Tweet() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -57,9 +68,7 @@ public class Tweet implements Parcelable {
         dest.writeLong(this.uid);
         dest.writeString(this.createdAt);
         dest.writeParcelable(this.user, 0);
-    }
-
-    public Tweet() {
+        dest.writeTypedList(medias);
     }
 
     protected Tweet(Parcel in) {
@@ -67,9 +76,10 @@ public class Tweet implements Parcelable {
         this.uid = in.readLong();
         this.createdAt = in.readString();
         this.user = in.readParcelable(User.class.getClassLoader());
+        this.medias = in.createTypedArrayList(Media.CREATOR);
     }
 
-    public static final Parcelable.Creator<Tweet> CREATOR = new Parcelable.Creator<Tweet>() {
+    public static final Creator<Tweet> CREATOR = new Creator<Tweet>() {
         public Tweet createFromParcel(Parcel source) {
             return new Tweet(source);
         }

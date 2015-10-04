@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -77,6 +79,19 @@ public class TimelineActivity extends AppCompatActivity {
 
         client = TweeterApp.getRestClient();
         populateTimeline(1L, null, TWITTER_FETCH_COUNT, false);
+
+        setupListViewListener();
+    }
+
+    private void setupListViewListener() {
+        lvTweets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(getApplicationContext(), TweetDetailActivity.class);
+                i.putExtra("tweet", aTweets.getItem(position));
+                startActivity(i);
+            }
+        });
     }
 
     private void populateTimeline(
