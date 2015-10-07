@@ -23,6 +23,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:focusable="false"
+        android:id="@+id/rlTweet"
         android:layout_toEndOf="@id/ivProfile">
 
         <TextView
@@ -58,6 +59,14 @@
             android:focusable="false"
             android:linksClickable="true"
             android:id="@+id/tvTweet" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tvTweet"
+            android:layout_marginTop="10dp"
+            android:id="@+id/rlMedia" >
+        </RelativeLayout>
 
     </RelativeLayout>
 

@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.codepath.apps.tweeter.R;
+import com.codepath.apps.tweeter.models.Media;
 import com.codepath.apps.tweeter.models.Tweet;
 import com.squareup.picasso.Picasso;
 
@@ -28,7 +30,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         public TextView tvUsername;
         public TextView tvScreenName;
         public TextView tvCreatedTime;
-
+        public RelativeLayout rlMedia;
     }
 
     public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
@@ -50,6 +52,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
             viewHolder.tvCreatedTime = (TextView) convertView.findViewById(R.id.tvCreatedTime);
             viewHolder.tvTweet = (TextView) convertView.findViewById(R.id.tvTweet);
+            viewHolder.rlMedia = (RelativeLayout) convertView.findViewById(R.id.rlMedia);
 
             convertView.setTag(viewHolder);
         } else {
@@ -86,7 +89,24 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         Picasso.with(getContext()).load(tweet.user.profileImageUrl
                 .replace("normal", "bigger")).into(viewHolder.ivProfile);
 
+        addMedias(viewHolder, tweet);
+
         return convertView;
+    }
+
+    private void addMedias(ViewHolder viewHolder, Tweet tweet) {
+        if(tweet.medias != null) {
+            for (Media m : tweet.medias) {
+                ImageView iv = new ImageView(getContext());
+                iv.setScaleType(ImageView.ScaleType.FIT_XY);
+                Picasso.with(getContext())
+                        .load(m.mediaUrl).into(iv);
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+                viewHolder.rlMedia.addView(iv, lp);
+            }
+        }
     }
 
     public static Date getTwitterDate(String date) throws ParseException {

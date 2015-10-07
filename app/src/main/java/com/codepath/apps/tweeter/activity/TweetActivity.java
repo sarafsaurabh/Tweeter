@@ -136,6 +136,7 @@ public class TweetActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.mipmap.ic_twitter);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle("Tweet");
         getSupportActionBar().setElevation(0);
     }
 
