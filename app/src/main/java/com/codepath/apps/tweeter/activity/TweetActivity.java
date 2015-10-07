@@ -133,7 +133,7 @@ public class TweetActivity extends AppCompatActivity {
     private void setActionBar() {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF4A9CED));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_twitter);
+        getSupportActionBar().setLogo(R.mipmap.ic_twitter);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setElevation(0);
