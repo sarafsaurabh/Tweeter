@@ -54,7 +54,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
 		getSupportActionBar().setLogo(R.mipmap.ic_twitter);
 		getSupportActionBar().setDisplayUseLogoEnabled(true);
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setTitle(R.string.app_name);
         getSupportActionBar().setElevation(0);
     }
 

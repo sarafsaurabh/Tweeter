@@ -1,10 +1,7 @@
 package com.codepath.apps.tweeter.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -22,6 +19,7 @@ import com.codepath.apps.tweeter.R;
 import com.codepath.apps.tweeter.TweeterApp;
 import com.codepath.apps.tweeter.models.Tweet;
 import com.codepath.apps.tweeter.models.User;
+import com.codepath.apps.tweeter.util.NetworkUtil;
 import com.codepath.apps.tweeter.util.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
@@ -152,7 +150,7 @@ public class TweetActivity extends AppCompatActivity {
                     "Please enter a valid tweet", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(!isNetworkAvailable()) {
+        if(!NetworkUtil.isNetworkAvailable(this)) {
             Toast.makeText(getApplicationContext(),
                     "No internet connection available", Toast.LENGTH_SHORT).show();
             finish();
@@ -199,12 +197,5 @@ public class TweetActivity extends AppCompatActivity {
         tweet.createdAt = "Sat Oct 03 07:06:37 +0000 2015";
 
         return tweet;
-    }
-
-    private Boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }
