@@ -105,6 +105,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
                 viewHolder.rlMedia.addView(iv, lp);
+                break; //just add 1 media as of now
             }
         }
     }

@@ -3,12 +3,18 @@ package com.codepath.apps.tweeter.activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.tweeter.R;
 import com.codepath.apps.tweeter.fragment.HomeTimeLineFragment;
+import com.codepath.apps.tweeter.fragment.MentionsTimelineFragment;
 import com.codepath.apps.tweeter.models.Tweet;
 
 public class TimelineActivity extends AppCompatActivity {
@@ -21,11 +27,18 @@ public class TimelineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         setActionBar();
+//todo
+//        if(savedInstanceState == null) {
+//            homeTimeLineFragment = (HomeTimeLineFragment)
+//                    getSupportFragmentManager().findFragmentById(R.id.fragment_timeline);
+//        }
 
-        if(savedInstanceState == null) {
-            homeTimeLineFragment = (HomeTimeLineFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.fragment_timeline);
-        }
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+
+        viewPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+
+        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabStrip.setViewPager(viewPager);
     }
 
     @Override
@@ -60,7 +73,6 @@ public class TimelineActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if(requestCode == REQUEST_CODE_TIMELINE) {
             if(resultCode == RESULT_OK) {
                 Tweet tweet = data.getParcelableExtra("tweet");
@@ -68,6 +80,40 @@ public class TimelineActivity extends AppCompatActivity {
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    public void onProfileView(MenuItem item) {
+        Intent i = new Intent(this, ProfileActivity.class);
+        startActivity(i);
+    }
+
+    public class TweetsPagerAdapter extends FragmentPagerAdapter {
+        private String tabTitles[] = {"Home", "Mentions"};
+
+        public TweetsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if(position == 0) {
+                return new HomeTimeLineFragment();
+            } else if(position == 1) {
+                return new MentionsTimelineFragment();
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+
+        @Override
+        public int getCount() {
+            return tabTitles.length ;
         }
     }
 }

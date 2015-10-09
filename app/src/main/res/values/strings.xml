@@ -12,5 +12,7 @@
     <string name="tweet_hint">What\'s happening?</string>
     <string name="tweet">TWEET</string>
     <string name="title_activity_tweet_detail">TweetDetailActivity</string>
+    <string name="profile">Profile</string>
+    <string name="title_activity_profile">ProfileActivity</string>
 
 </resources>
