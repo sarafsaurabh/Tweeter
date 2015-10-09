@@ -15,6 +15,7 @@ public class User implements Parcelable {
     public String tagLine;
     public int followersCount;
     public int followingsCount;
+    public String profileBannerUrl;
 
     public static User fromJSON(JSONObject json) throws JSONException {
         User u = new User();
@@ -25,6 +26,7 @@ public class User implements Parcelable {
         u.tagLine = json.getString("description");
         u.followersCount = json.getInt("followers_count");
         u.followingsCount = json.getInt("friends_count");
+        u.profileBannerUrl = json.getString("profile_banner_url");
         return u;
     }
 
@@ -45,6 +47,7 @@ public class User implements Parcelable {
         dest.writeString(this.tagLine);
         dest.writeInt(this.followersCount);
         dest.writeInt(this.followingsCount);
+        dest.writeString(this.profileBannerUrl);
     }
 
     protected User(Parcel in) {
@@ -55,6 +58,7 @@ public class User implements Parcelable {
         this.tagLine = in.readString();
         this.followersCount = in.readInt();
         this.followingsCount = in.readInt();
+        this.profileBannerUrl = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {

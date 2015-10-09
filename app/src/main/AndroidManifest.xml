@@ -49,6 +49,7 @@
         </activity>
         <activity
             android:name=".activity.TimelineActivity"
+            android:launchMode="singleTop"
             android:label="@string/title_activity_timeline" >
         </activity>
         <activity
@@ -61,7 +62,11 @@
         </activity>
         <activity
             android:name=".activity.ProfileActivity"
-            android:label="@string/title_activity_profile" >
+            android:label="@string/title_activity_profile"
+            android:parentActivityName=".activity.TimelineActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.TimelineActivity" />
         </activity>
     </application>
 
