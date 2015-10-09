@@ -12,6 +12,9 @@ public class User implements Parcelable {
     public long uid;
     public String screenName;
     public String profileImageUrl;
+    public String tagLine;
+    public int followersCount;
+    public int followingsCount;
 
     public static User fromJSON(JSONObject json) throws JSONException {
         User u = new User();
@@ -19,8 +22,13 @@ public class User implements Parcelable {
         u.uid = json.getLong("id");
         u.screenName = json.getString("screen_name");
         u.profileImageUrl = json.getString("profile_image_url");
-
+        u.tagLine = json.getString("description");
+        u.followersCount = json.getInt("followers_count");
+        u.followingsCount = json.getInt("friends_count");
         return u;
+    }
+
+    public User() {
     }
 
     @Override
@@ -34,9 +42,9 @@ public class User implements Parcelable {
         dest.writeLong(this.uid);
         dest.writeString(this.screenName);
         dest.writeString(this.profileImageUrl);
-    }
-
-    public User() {
+        dest.writeString(this.tagLine);
+        dest.writeInt(this.followersCount);
+        dest.writeInt(this.followingsCount);
     }
 
     protected User(Parcel in) {
@@ -44,9 +52,12 @@ public class User implements Parcelable {
         this.uid = in.readLong();
         this.screenName = in.readString();
         this.profileImageUrl = in.readString();
+        this.tagLine = in.readString();
+        this.followersCount = in.readInt();
+        this.followingsCount = in.readInt();
     }
 
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         public User createFromParcel(Parcel source) {
             return new User(source);
         }
