@@ -4,9 +4,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.tweeter.R;
@@ -26,6 +28,9 @@ public class ProfileActivity extends AppCompatActivity {
     TwitterClient client;
     User user;
     ImageView ivProfileBkg;
+    TextView tvTweets;
+    TextView tvFollowers;
+    TextView tvFollowing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,11 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         setActionBar();
+
+        ivProfileBkg = (ImageView) findViewById(R.id.ivProfileBkg);
+        tvTweets = (TextView) findViewById(R.id.tvTweets);
+        tvFollowers = (TextView) findViewById(R.id.tvFollowers);
+        tvFollowing = (TextView) findViewById(R.id.tvFollowing);
 
         client = TweeterApp.getRestClient();
         client.getUserInfo(new JsonHttpResponseHandler() {
@@ -43,11 +53,27 @@ public class ProfileActivity extends AppCompatActivity {
                     getSupportActionBar().setDisplayShowTitleEnabled(true);
                     getSupportActionBar().setTitle("@" + user.screenName);
 
-                    ivProfileBkg = (ImageView) findViewById(R.id.ivProfileBkg);
+                    if(user.profileBannerUrl != null) {
+                        Picasso.with(
+                                getApplicationContext()).load(
+                                user.profileBannerUrl).into(ivProfileBkg);
+                    }
 
-                    Picasso.with(
-                            getApplicationContext()).load(
-                            user.profileBannerUrl).into(ivProfileBkg);
+                    String styledTweetText = "<font color=\"#000000\">"
+                            + String.valueOf(user.tweetCount) + "</font>" + "<br/>" + "TWEETS";
+                    tvTweets.setText(Html.fromHtml(styledTweetText),
+                            TextView.BufferType.SPANNABLE);
+
+                    String styledTweetFollowers = "<font color=\"#000000\">"
+                            + String.valueOf(user.followersCount) + "</font>" + "<br/>" + "FOLLOWERS";
+                    tvFollowers.setText(Html.fromHtml(styledTweetFollowers),
+                            TextView.BufferType.SPANNABLE);
+
+                    String styledTweetFollowing = "<font color=\"#000000\">"
+                            + String.valueOf(user.followingsCount) + "</font>" + "<br/>" + "FOLLOWING";
+                    tvFollowing.setText(Html.fromHtml(styledTweetFollowing),
+                            TextView.BufferType.SPANNABLE);
+
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(),
                             "Not able to load user information", Toast.LENGTH_SHORT).show();

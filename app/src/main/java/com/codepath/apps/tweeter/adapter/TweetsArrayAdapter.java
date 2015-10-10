@@ -65,7 +65,6 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         viewHolder.tvScreenName.setText("@" + tweet.user.screenName);
         viewHolder.tvUsername.setText(tweet.user.name);
 
-        // 37 minutes ago => ["37", "minutes", "ago"]
         try {
 
             String[] createdTimeSplit =
@@ -76,7 +75,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
             if(createdTimeSplit.length > 1) {
                 viewHolder.tvCreatedTime.setText(
-                        createdTimeSplit[0] + createdTimeSplit[1].charAt(0));
+                        createdTimeSplit[0] + " " + createdTimeSplit[1].charAt(0));
             } else {
                 viewHolder.tvCreatedTime.setText(createdTimeSplit[0]);
             }

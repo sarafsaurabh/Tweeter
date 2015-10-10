@@ -2,21 +2,72 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 tools:context="com.codepath.apps.tweeter.activity.ProfileActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginBottom="2dp"
         android:id="@+id/rlUserHeader">
 
         <ImageView
             android:id="@+id/ivProfileBkg"
             android:scaleType="fitXY"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="150dp"/>
+
+        <android.support.percent.PercentRelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_below="@+id/ivProfileBkg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvTweets"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginEnd="2dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:lines="2"
+                android:background="@android:color/white"
+                app:layout_widthPercent="33.33%" />
+
+            <TextView
+                android:id="@+id/tvFollowing"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginEnd="2dp"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:background="@android:color/white"
+                android:layout_toRightOf="@+id/tvTweets"
+                android:layout_toEndOf="@+id/tvTweets"
+                android:lines="2"
+                app:layout_widthPercent="33.33%" />
+
+            <TextView
+                android:id="@+id/tvFollowers"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="5dp"
+                android:background="@android:color/white"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:layout_toRightOf="@+id/tvFollowing"
+                android:layout_toEndOf="@+id/tvFollowing"
+                android:lines="2"
+                app:layout_widthPercent="33.34%" />
+        </android.support.percent.PercentRelativeLayout>
 
     </RelativeLayout>
 
