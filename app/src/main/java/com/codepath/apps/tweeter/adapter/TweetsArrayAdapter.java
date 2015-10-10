@@ -28,7 +28,6 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         public TextView tvUsername;
         public TextView tvScreenName;
         public TextView tvCreatedTime;
-        public ImageView ivMedia;
     }
 
     public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
@@ -50,7 +49,6 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
             viewHolder.tvCreatedTime = (TextView) convertView.findViewById(R.id.tvCreatedTime);
             viewHolder.tvTweet = (TextView) convertView.findViewById(R.id.tvTweet);
-            viewHolder.ivMedia = (ImageView) convertView.findViewById(R.id.ivMedia);
 
             convertView.setTag(viewHolder);
         } else {
@@ -84,11 +82,6 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
         Picasso.with(getContext()).load(tweet.user.profileImageUrl
                 .replace("normal", "bigger")).into(viewHolder.ivProfile);
-
-        if(tweet.medias != null && tweet.medias.size() > 0) {
-            Picasso.with(getContext())
-                    .load(tweet.medias.get(0).mediaUrl).into(viewHolder.ivMedia);
-        }
 
         return convertView;
     }

@@ -158,41 +158,35 @@ public class TweetActivity extends AppCompatActivity {
                     "No internet connection available", Toast.LENGTH_SHORT).show();
             finish();
         }
-//        client.postTweet(new JsonHttpResponseHandler() {
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
-//                Log.d(getClass().toString(), json.toString());
-//                try {
-//                    Tweet tweet = Tweet.fromJSON(json);
-//                    Intent intent = new Intent();
-//                    intent.putExtra("tweet", tweet);
-//                    setResult(RESULT_OK, intent);
-//                    finish();
-//
-//                } catch (JSONException e) {
-//                    Log.e(getClass().toString(), e.getMessage());
-//                    Toast.makeText(getApplicationContext(),
-//                            "Not able to post tweet", Toast.LENGTH_SHORT).show();
-//                    setResult(RESULT_CANCELED);
-//                    finish();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, String response,
-//                                  Throwable throwable) {
-//                Log.e(getClass().toString(), response);
-//                Toast.makeText(getApplicationContext(),
-//                        "Not able to post tweet", Toast.LENGTH_SHORT).show();
-//            }
-//        }, etTweet.getText().toString());
+        client.postTweet(new JsonHttpResponseHandler() {
 
-        Tweet t = getMockTweet();
-                            Intent intent = new Intent();
-                    intent.putExtra("tweet", t);
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
+                Log.d(getClass().toString(), json.toString());
+                try {
+                    Tweet tweet = Tweet.fromJSON(json);
+                    Intent intent = new Intent();
+                    intent.putExtra("tweet", tweet);
                     setResult(RESULT_OK, intent);
                     finish();
+
+                } catch (JSONException e) {
+                    Log.e(getClass().toString(), e.getMessage());
+                    Toast.makeText(getApplicationContext(),
+                            "Not able to post tweet", Toast.LENGTH_SHORT).show();
+                    setResult(RESULT_CANCELED);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String response,
+                                  Throwable throwable) {
+                Log.e(getClass().toString(), response);
+                Toast.makeText(getApplicationContext(),
+                        "Not able to post tweet", Toast.LENGTH_SHORT).show();
+            }
+        }, etTweet.getText().toString());
     }
 
     private Tweet getMockTweet() {

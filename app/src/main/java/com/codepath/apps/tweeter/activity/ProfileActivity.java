@@ -45,6 +45,10 @@ public class ProfileActivity extends AppCompatActivity {
         tvFollowing = (TextView) findViewById(R.id.tvFollowing);
 
         client = TweeterApp.getRestClient();
+
+        String screenName = getIntent().getStringExtra("screen_name");
+
+
         client.getUserInfo(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -53,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
                     getSupportActionBar().setDisplayShowTitleEnabled(true);
                     getSupportActionBar().setTitle("@" + user.screenName);
 
-                    if(user.profileBannerUrl != null) {
+                    if (user.profileBannerUrl != null) {
                         Picasso.with(
                                 getApplicationContext()).load(
                                 user.profileBannerUrl).into(ivProfileBkg);
@@ -81,7 +85,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        String screenName = getIntent().getStringExtra("screen_name");
         if(savedInstanceState == null) {
             UserTimelineFragment userTimelineFragment =
                     UserTimelineFragment.newInstance(screenName);
