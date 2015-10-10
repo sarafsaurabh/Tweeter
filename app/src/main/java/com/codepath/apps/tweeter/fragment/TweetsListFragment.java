@@ -53,7 +53,7 @@ public abstract class TweetsListFragment extends Fragment {
         scTweets.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(tweets != null) {
+                if (tweets != null) {
                     Tweet firstTweet = tweets.get(0);
                     // since we'll be fetching new tweets, append to the front of list
                     populateTimeline(firstTweet.uid, null, true);

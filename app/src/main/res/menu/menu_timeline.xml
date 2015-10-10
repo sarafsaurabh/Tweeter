@@ -4,6 +4,13 @@
     tools:context="com.codepath.apps.tweeter.activity.TimelineActivity">
 
     <item
+        android:id="@+id/miActionProgress"
+        android:title="Loading..."
+        android:visible="false"
+        app:showAsAction="ifRoom"
+        app:actionLayout="@layout/action_view_progress" />
+
+    <item
         android:id="@+id/miProfile"
         android:icon="@mipmap/ic_profile"
         app:showAsAction="ifRoom"

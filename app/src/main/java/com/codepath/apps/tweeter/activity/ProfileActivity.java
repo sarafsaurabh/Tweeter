@@ -16,6 +16,7 @@ import com.codepath.apps.tweeter.R;
 import com.codepath.apps.tweeter.TweeterApp;
 import com.codepath.apps.tweeter.fragment.UserTimelineFragment;
 import com.codepath.apps.tweeter.models.User;
+import com.codepath.apps.tweeter.util.NetworkUtil;
 import com.codepath.apps.tweeter.util.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
@@ -44,6 +45,11 @@ public class ProfileActivity extends AppCompatActivity {
         tvTweets = (TextView) findViewById(R.id.tvTweets);
         tvFollowers = (TextView) findViewById(R.id.tvFollowers);
         tvFollowing = (TextView) findViewById(R.id.tvFollowing);
+
+        if(!NetworkUtil.isNetworkAvailable(this)) {
+            Toast.makeText(this, "No internet connection available", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         client = TweeterApp.getRestClient();
 

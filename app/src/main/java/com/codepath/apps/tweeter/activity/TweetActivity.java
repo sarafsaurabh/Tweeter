@@ -71,8 +71,6 @@ public class TweetActivity extends AppCompatActivity {
 
                 } catch (JSONException e) {
                     Log.e(getClass().toString(), e.getMessage());
-                    Toast.makeText(getApplicationContext(),
-                            "Not able to load user information", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -80,8 +78,6 @@ public class TweetActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers,
                                   Throwable throwable, JSONObject errorResponse) {
                 Log.e(getClass().toString(), errorResponse.toString());
-                Toast.makeText(getApplicationContext(),
-                        "Not able to load user information", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -153,7 +149,7 @@ public class TweetActivity extends AppCompatActivity {
                     "Please enter a valid tweet", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(!NetworkUtil.isNetworkAvailable(this)) {
+        if (!NetworkUtil.isNetworkAvailable(this)) {
             Toast.makeText(getApplicationContext(),
                     "No internet connection available", Toast.LENGTH_SHORT).show();
             finish();
