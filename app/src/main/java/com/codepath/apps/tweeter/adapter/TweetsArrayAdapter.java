@@ -1,6 +1,7 @@
 package com.codepath.apps.tweeter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.tweeter.R;
+import com.codepath.apps.tweeter.activity.ProfileActivity;
 import com.codepath.apps.tweeter.models.Tweet;
 import com.squareup.picasso.Picasso;
 
@@ -49,6 +51,18 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
             viewHolder.tvCreatedTime = (TextView) convertView.findViewById(R.id.tvCreatedTime);
             viewHolder.tvTweet = (TextView) convertView.findViewById(R.id.tvTweet);
+
+            View.OnClickListener l = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(v.getContext(), ProfileActivity.class);
+                    i.putExtra("screen_name", viewHolder.tvScreenName.getText());
+                    getContext().startActivity(i);
+                }
+            };
+
+            viewHolder.tvScreenName.setOnClickListener(l);
+            viewHolder.tvUsername.setOnClickListener(l);
 
             convertView.setTag(viewHolder);
         } else {

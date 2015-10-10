@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -46,13 +47,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         client = TweeterApp.getRestClient();
 
-        String screenName = getIntent().getStringExtra("screen_name");
-
-
-        client.getUserInfo(new JsonHttpResponseHandler() {
+        JsonHttpResponseHandler j = new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onSuccess ( int statusCode, Header[] headers, JSONObject response){
                 try {
+                    Log.d(getClass().getName(), response.toString());
                     user = User.fromJSON(response);
                     getSupportActionBar().setDisplayShowTitleEnabled(true);
                     getSupportActionBar().setTitle("@" + user.screenName);
@@ -83,7 +82,15 @@ public class ProfileActivity extends AppCompatActivity {
                             "Not able to load user information", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        };
+
+        String screenName = getIntent().getStringExtra("screen_name");
+
+        if(screenName == null) {
+            client.getUserInfo(j);
+        } else {
+            client.getUserInfo(screenName, j);
+        }
 
         if(savedInstanceState == null) {
             UserTimelineFragment userTimelineFragment =

@@ -10,8 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.tweeter.R;
@@ -83,14 +81,6 @@ public class TimelineActivity extends AppCompatActivity {
 
     public void onProfileView(MenuItem item) {
         Intent i = new Intent(this, ProfileActivity.class);
-        startActivity(i);
-    }
-
-    public void onUsernameClick(View view) {
-        TextView tvScreenName = (TextView) findViewById(R.id.tvScreenName);
-
-        Intent i = new Intent(this, ProfileActivity.class);
-        i.putExtra("screen_name", tvScreenName.getText());
         startActivity(i);
     }
 

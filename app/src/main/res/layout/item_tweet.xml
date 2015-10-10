@@ -30,7 +30,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
-            android:onClick="onUsernameClick"
             android:focusable="false"
             android:id="@+id/tvUsername" />
 
@@ -41,7 +40,6 @@
             android:layout_marginStart="5dp"
             android:layout_toRightOf="@id/tvUsername"
             android:layout_toEndOf="@id/tvUsername"
-            android:onClick="onUsernameClick"
             android:focusable="false"
             android:id="@+id/tvScreenName" />
 
