@@ -20,18 +20,14 @@ import com.codepath.apps.tweeter.models.Tweet;
 public class TimelineActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_TIMELINE = 1;
-    HomeTimeLineFragment homeTimeLineFragment;
+    HomeTimeLineFragment homeTimeLineFragment = new HomeTimeLineFragment();
+    MentionsTimelineFragment mentionsTimelineFragment = new MentionsTimelineFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         setActionBar();
-//todo
-//        if(savedInstanceState == null) {
-//            homeTimeLineFragment = (HomeTimeLineFragment)
-//                    getSupportFragmentManager().findFragmentById(R.id.fragment_timeline);
-//        }
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -98,9 +94,9 @@ public class TimelineActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             if(position == 0) {
-                return new HomeTimeLineFragment();
+                return homeTimeLineFragment;
             } else if(position == 1) {
-                return new MentionsTimelineFragment();
+                return mentionsTimelineFragment;
             } else {
                 return null;
             }

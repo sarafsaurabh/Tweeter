@@ -68,7 +68,6 @@ public abstract class TweetsListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
-
         aTweets = new TweetsArrayAdapter(this.getContext(), tweets);
     }
 

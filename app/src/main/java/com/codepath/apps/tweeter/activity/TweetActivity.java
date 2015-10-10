@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.codepath.apps.tweeter.R;
 import com.codepath.apps.tweeter.TweeterApp;
+import com.codepath.apps.tweeter.models.Media;
 import com.codepath.apps.tweeter.models.Tweet;
 import com.codepath.apps.tweeter.models.User;
 import com.codepath.apps.tweeter.util.NetworkUtil;
@@ -27,6 +28,8 @@ import com.squareup.picasso.Picasso;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class TweetActivity extends AppCompatActivity {
 
@@ -155,35 +158,41 @@ public class TweetActivity extends AppCompatActivity {
                     "No internet connection available", Toast.LENGTH_SHORT).show();
             finish();
         }
-        client.postTweet(new JsonHttpResponseHandler() {
+//        client.postTweet(new JsonHttpResponseHandler() {
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
+//                Log.d(getClass().toString(), json.toString());
+//                try {
+//                    Tweet tweet = Tweet.fromJSON(json);
+//                    Intent intent = new Intent();
+//                    intent.putExtra("tweet", tweet);
+//                    setResult(RESULT_OK, intent);
+//                    finish();
+//
+//                } catch (JSONException e) {
+//                    Log.e(getClass().toString(), e.getMessage());
+//                    Toast.makeText(getApplicationContext(),
+//                            "Not able to post tweet", Toast.LENGTH_SHORT).show();
+//                    setResult(RESULT_CANCELED);
+//                    finish();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, String response,
+//                                  Throwable throwable) {
+//                Log.e(getClass().toString(), response);
+//                Toast.makeText(getApplicationContext(),
+//                        "Not able to post tweet", Toast.LENGTH_SHORT).show();
+//            }
+//        }, etTweet.getText().toString());
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
-                Log.d(getClass().toString(), json.toString());
-                try {
-                    Tweet tweet = Tweet.fromJSON(json);
-                    Intent intent = new Intent();
-                    intent.putExtra("tweet", tweet);
+        Tweet t = getMockTweet();
+                            Intent intent = new Intent();
+                    intent.putExtra("tweet", t);
                     setResult(RESULT_OK, intent);
                     finish();
-
-                } catch (JSONException e) {
-                    Log.e(getClass().toString(), e.getMessage());
-                    Toast.makeText(getApplicationContext(),
-                            "Not able to post tweet", Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_CANCELED);
-                    finish();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String response,
-                                  Throwable throwable) {
-                Log.e(getClass().toString(), response);
-                Toast.makeText(getApplicationContext(),
-                        "Not able to post tweet", Toast.LENGTH_SHORT).show();
-            }
-        }, etTweet.getText().toString());
     }
 
     private Tweet getMockTweet() {
@@ -194,6 +203,10 @@ public class TweetActivity extends AppCompatActivity {
         tweet.user.profileImageUrl= "http://pbs.twimg.com/profile_images/629772340709191680//X1TGvzif_bigger.jpg";
         tweet.user.screenName = "test";
         tweet.user.uid = 2l;
+        Media m = new Media();
+        m.mediaUrl = "https://www.google.com/images/nav_logo231_hr.png";
+        tweet.medias = new ArrayList<>();
+        tweet.medias.add(m);
         tweet.createdAt = "Sat Oct 03 07:06:37 +0000 2015";
 
         return tweet;
